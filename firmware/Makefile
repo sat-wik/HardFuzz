@@ -13,31 +13,34 @@ SIZE    = $(CROSS)size
 CFLAGS  = -mcpu=cortex-m4 -mthumb -mfloat-abi=soft \
           -O2 -g3 -Wall -Wextra -ffreestanding -fno-common \
           -ffunction-sections -fdata-sections
-LDFLAGS = -T stm32f446.ld -nostdlib -Wl,--gc-sections -Wl,-Map=build/fw.map
-
 APP ?= main
 SRC = src/startup_stm32f446.c src/$(APP).c
 BUILD = build
+ELF  = $(BUILD)/$(APP).elf
+BIN  = $(BUILD)/$(APP).bin
+# Per-app output names, so switching APP always rebuilds (no stale fw.bin footgun).
+LDFLAGS = -T stm32f446.ld -nostdlib -Wl,--gc-sections -Wl,-Map=$(BUILD)/$(APP).map
 
 .PHONY: all flash flash-openocd clean
 
-all: $(BUILD)/fw.bin
+all: $(BIN)
+	@echo "built $(BIN)"
 
-$(BUILD)/fw.elf: $(SRC) stm32f446.ld
+$(ELF): $(SRC) stm32f446.ld
 	@mkdir -p $(BUILD)
 	$(CC) $(CFLAGS) $(LDFLAGS) $(SRC) -o $@
 	$(SIZE) $@
 
-$(BUILD)/fw.bin: $(BUILD)/fw.elf
+$(BIN): $(ELF)
 	$(OBJCOPY) -O binary $< $@
 
 # Flash over ST-Link (the NUCLEO's onboard programmer).
-flash: $(BUILD)/fw.bin
-	st-flash --reset write $(BUILD)/fw.bin 0x08000000
+flash: $(BIN)
+	st-flash --reset write $(BIN) 0x08000000
 
-flash-openocd: $(BUILD)/fw.elf
+flash-openocd: $(ELF)
 	openocd -f board/st_nucleo_f4.cfg \
-	  -c "program $(BUILD)/fw.elf verify reset exit"
+	  -c "program $(ELF) verify reset exit"
 
 clean:
 	rm -rf $(BUILD)

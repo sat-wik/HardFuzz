@@ -15,10 +15,12 @@ brew install --cask gcc-arm-embedded    # arm-none-eabi-gcc
 brew install stlink                      # st-flash (uses the NUCLEO's onboard ST-Link)
 
 cd firmware
-make            # -> build/fw.bin  (~1.8 KB)
-make flash      # writes to 0x08000000 and resets
+make            # -> build/main.bin  (SPI); make APP=main_i2c -> build/main_i2c.bin
+make flash      # writes to 0x08000000 and resets (add APP=main_i2c for the I2C app)
 ```
 
+Each app builds to its own `build/<app>.bin`, so switching `APP` always rebuilds
+(no stale-binary surprises). Drag-drop flashing: `cp build/main.bin /Volumes/<NUCLEO>/`.
 (`make flash-openocd` is there if you prefer OpenOCD.)
 
 ## Wiring — do this with both boards powered off
