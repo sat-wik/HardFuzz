@@ -7,3 +7,8 @@ fp-info-cache
 *-backups/
 _autosave-*
 *.kicad_prl
+
+# editor / KiCad locks / local history
+.history/
+~*.lck
+*.lck

@@ -190,15 +190,24 @@ class Schematic:
         L(f'\t)')
         return "\n".join(lines)
 
-    def _labels(self, c):
+    def _labels(self, c, stub=5.08):
+        """For each connected pin: a short wire stub pointing outward from the symbol,
+        with the net label at the stub's far end so labels sit clear of the body."""
         out = []
         for (num, px, py, ang) in self.lib.pins(c.lib_id):
             net = c.nets.get(num)
             if not net:
                 continue
-            x, y = c.pin_xy(px, py)
+            x, y = c.pin_xy(px, py)                 # pin connection point (sheet coords)
+            out_ang = math.radians((ang + 180) % 360)   # pin `ang` points into body; go opposite
+            ex = round(x + math.cos(out_ang) * stub, 2)
+            ey = round(y - math.sin(out_ang) * stub, 2)  # Y is flipped in schematic space
+            lang = 0 if abs(ex - x) >= abs(ey - y) else 90
             out.append(
-                f'\t(label "{net}" (at {x:.2f} {y:.2f} 0)\n'
+                f'\t(wire (pts (xy {x:.2f} {y:.2f}) (xy {ex:.2f} {ey:.2f}))\n'
+                f'\t\t(stroke (width 0) (type default)) (uuid "{uid()}"))')
+            out.append(
+                f'\t(label "{net}" (at {ex:.2f} {ey:.2f} {lang})\n'
                 f'\t\t(effects (font (size 1.27 1.27)) (justify left))\n'
                 f'\t\t(uuid "{uid()}"))')
         return "\n".join(out)
