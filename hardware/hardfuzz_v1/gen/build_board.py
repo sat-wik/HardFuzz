@@ -92,6 +92,7 @@ def build():
         if name == "USB":                      # PWR_FLAGs live with the regulators/rails
             for j, net in enumerate(FLAGS):
                 s.add("power:PWR_FLAG", f"#FLG{50+j}", "PWR_FLAG", 40 + j * 18, 250, {"1": net})
+        s.autofit()                            # frame every sheet with a margin, size paper to fit
         total_conflicts += len(s.write(os.path.join(HERE, file)))
     with open(os.path.join(HERE, "board.kicad_sch"), "w") as f:
         f.write(_root(root_uuid, sheet_uuids))

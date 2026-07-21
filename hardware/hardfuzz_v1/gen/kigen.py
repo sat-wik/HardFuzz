@@ -248,7 +248,8 @@ class Schematic:
     def _labels(self, c, stub=2.54):
         """For each connected pin: the net label at (or just off) the pin endpoint.
         Sparse parts get a short outward wire stub so labels sit clear of the body;
-        dense ICs get the label right on the pin to avoid stub-crossing shorts."""
+        dense ICs get the label right on the pin to avoid stub-crossing shorts. Text
+        is justified so it always extends AWAY from the component body, never over it."""
         out = []
         pins = self.lib.pins(c.lib_id, c.unit)
         use_stub = c.stub and len(pins) <= self.STUB_MAX_PINS
@@ -257,26 +258,29 @@ class Schematic:
             if not net:
                 continue
             x, y = c.pin_xy(px, py)                 # pin connection point (sheet coords)
+            a = math.radians((ang + 180) % 360)     # outward direction (pin `ang` -> body)
+            dx, dy = math.cos(a), -math.sin(a)      # sheet space (Y flipped)
             if use_stub:
-                out_ang = math.radians((ang + 180) % 360)   # pin `ang` -> body; go opposite
-                ex = round(x + math.cos(out_ang) * stub, 2)
-                ey = round(y - math.sin(out_ang) * stub, 2)  # Y flipped in schematic space
-                lang = 0 if abs(ex - x) >= abs(ey - y) else 90
+                ex, ey = round(x + dx * stub, 2), round(y + dy * stub, 2)
                 out.append(
                     f'\t(wire (pts (xy {x:.2f} {y:.2f}) (xy {ex:.2f} {ey:.2f}))\n'
                     f'\t\t(stroke (width 0) (type default)) (uuid "{uid()}"))')
             else:
-                ex, ey, lang = x, y, 0
-            if net in self.global_nets:
-                out.append(
-                    f'\t(global_label "{net}" (shape bidirectional) (at {ex:.2f} {ey:.2f} {lang})\n'
-                    f'\t\t(effects (font (size 1.27 1.27)) (justify left))\n'
-                    f'\t\t(uuid "{uid()}"))')
+                ex, ey = x, y
+            # rotate the label to run along the pin and justify text outward from the body
+            if abs(dx) >= abs(dy):
+                lang = 0
+                just = "right" if dx < 0 else "left"
             else:
-                out.append(
-                    f'\t(label "{net}" (at {ex:.2f} {ey:.2f} {lang})\n'
-                    f'\t\t(effects (font (size 1.27 1.27)) (justify left))\n'
-                    f'\t\t(uuid "{uid()}"))')
+                lang = 90
+                just = "right" if dy > 0 else "left"
+            eff = f'(effects (font (size 1.27 1.27)) (justify {just}))'
+            if net in self.global_nets:
+                out.append(f'\t(global_label "{net}" (shape bidirectional) '
+                           f'(at {ex:.2f} {ey:.2f} {lang})\n\t\t{eff}\n\t\t(uuid "{uid()}"))')
+            else:
+                out.append(f'\t(label "{net}" (at {ex:.2f} {ey:.2f} {lang})\n'
+                           f'\t\t{eff}\n\t\t(uuid "{uid()}"))')
         return "\n".join(out)
 
     def _no_connects(self, c):
@@ -322,6 +326,51 @@ class Schematic:
         parts.append('\t(embedded_fonts no)')
         parts.append(')')
         return "\n".join(parts) + "\n"
+
+    PAPERS = [("A4", 297, 210), ("A3", 420, 297), ("A2", 594, 420),
+              ("A1", 841, 594), ("A0", 1189, 841)]
+
+    def _content_pts(self):
+        """Every drawn point that must stay inside the frame: pin ends, stub-label
+        anchors + their text extent, and component origins (Reference/Value text)."""
+        pts = []
+        for c in self.comps:
+            pts.append((c.x + 3, c.y - 3))          # Reference/Value text sits above-right
+            pins = self.lib.pins(c.lib_id, c.unit)
+            use_stub = c.stub and len(pins) <= self.STUB_MAX_PINS
+            for (num, px, py, ang) in pins:
+                x, y = c.pin_xy(px, py)
+                pts.append((x, y))
+                net = c.nets.get(num)
+                if not net:
+                    continue
+                if use_stub:
+                    a = math.radians((ang + 180) % 360)
+                    x, y = x + math.cos(a) * 2.54, y - math.sin(a) * 2.54
+                gl = net in self.global_nets
+                tw = len(net) * 0.95 + (7 if gl else 3)   # label text / flag reach
+                pts.append((x + tw, y))                   # reserve room both sides — text
+                pts.append((x - tw, y))                   # justifies away from the body
+        return pts
+
+    def autofit(self, margin=25, title_allow=35):
+        """Translate content inside a margin and pick the smallest standard paper that
+        contains all of it (pins + labels + text), so nothing spills past the frame."""
+        pts = self._content_pts()
+        if not pts:
+            return
+        minx = min(p[0] for p in pts); maxx = max(p[0] for p in pts)
+        miny = min(p[1] for p in pts); maxy = max(p[1] for p in pts)
+        dx, dy = margin - minx, margin - miny
+        for c in self.comps:
+            c.x += dx; c.y += dy
+        w = (maxx - minx) + 2 * margin
+        h = (maxy - miny) + 2 * margin + title_allow
+        for name, pw, ph in self.PAPERS:
+            if w <= pw and h <= ph:
+                self.paper = name
+                return
+        self.paper = "A0"
 
     def check(self):
         """Detect accidental shorts: two different nets whose pins/stub-wires land on
