@@ -1,11 +1,31 @@
 # HardFuzz
 
-FPGA-based fault injection test module. Target hardware for this build: **Digilent
-Cmod A7** (Artix-7) + **ST NUCLEO-F446RE** as the first Device Under Test.
+![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+![RTL: Verilog](https://img.shields.io/badge/RTL-Verilog-orange)
+![Host: C++17](https://img.shields.io/badge/host-C%2B%2B17-00599C)
 
-See [docs/HardFuzz_Product_Plan.md](../HardFuzz_Product_Plan%20(1).md) for the full
-product vision and [HardFuzz_Refined_Plan.md](HardFuzz_Refined_Plan.md) for the
-version adapted to exactly this hardware (single STM32, no instruments yet).
+**A ~$40 FPGA fault-injection module for safety-critical embedded testing.** Inject
+precisely-targeted hardware faults — SPI bit-flips, I2C clock stretching, CAN frame
+corruption — into a live bus under host control, run scriptable coverage-guided
+campaigns, and get a pass/fail evidence report. An open, low-cost alternative to the
+$30K–$80K bench tools (Lauterbach, Kraken, XCITE) that ISO 26262 / IEC 61508 fault-
+injection evidence usually demands.
+
+Runs on a **Digilent Cmod A7** (Xilinx Artix-7) wired inline with a **NUCLEO-F446RE**
+as the device under test. Injector BOM ≈ $40.
+
+## What works today
+
+| Capability | Status |
+|---|---|
+| **SPI bit-flip** injection (target frame + bit) | ✅ on hardware |
+| **I2C clock-stretch** injection (target byte + duration) | ✅ on hardware — 36-scenario sweep passes |
+| **CAN frame corruption** (bad CRC / stuff / form error) | ✅ in simulation — needs a transceiver on hardware |
+| **`hardfuzz` campaign engine** — JSON campaigns, coverage-guided scheduling, live serial execution, JSON/CSV/HTML reports with IEC 61508 traceability | ✅ built + tested |
+
+Every RTL core self-checks in simulation (`make sim`); the C++ host layer has its own
+test suite (`make -C host`). See **[HardFuzz_Refined_Plan.md](HardFuzz_Refined_Plan.md)**
+for the full design and month-by-month build log.
 
 ## Layout
 
