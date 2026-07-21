@@ -1,0 +1,35 @@
+# Build artifacts (any 'build' dir: root sim, host/build, firmware/build)
+build/
+
+# Simulation
+*.vcd
+*.out
+*.fst
+
+# Vivado / synthesis junk
+*.jou
+*.log
+*.str
+*.rpt
+*.bit
+*.ltx
+.Xil/
+vivado_*.backup.*
+.cache/
+
+# Firmware binaries (also under build/, kept here for safety)
+*.elf
+*.bin
+*.map
+
+# Generated campaign reports
+*_report.html
+*_report.json
+*_report.csv
+
+# Python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
