@@ -1,0 +1,18 @@
+# KiCad autosave / backup / cache artifacts
+*-backups/
+_autosave-*
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*.kicad_prl
+fp-info-cache
+*.net
+sym-lib-table.bak
+fp-lib-table.bak
+
+# Generated fabrication / export outputs
+*/gerbers/
+*/production/
+*.gbr
+*.drl
+*.step
+*.stp

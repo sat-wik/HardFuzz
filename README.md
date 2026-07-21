@@ -50,6 +50,7 @@ constraints/    cmod_a7.xdc  (pinout; SPI on Pmod JA)
 scripts/        Vivado batch build / program TCL
 firmware/       STM32 C — SPI master (main.c) + I2C master (main_i2c.c)
 host/           arm.py + Month 3 C++ campaign library (include/hardfuzz/) & `hardfuzz` CLI
+hardware/       HardFuzz v1 custom-PCB design — schematic spec + BOM (KiCad capture next)
 docs/           timing-verification.md and design notes
 ```
 
