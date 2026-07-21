@@ -1,0 +1,14 @@
+{
+  "name": "mixed SPI + I2C campaign",
+  "target": "STM32F446 + multi_inject_top (both protocols, one bitstream)",
+  "standard": "IEC 61508",
+  "faults": [
+    { "id": "SPI-f5-b3",     "protocol": "spi", "frame": 5, "bit": 3,             "expect": "detected",  "requirement": "SR-SPI-01" },
+    { "id": "I2C-b2-timeout","protocol": "i2c", "byte": 2, "stretch_cycles": 60000, "expect": "detected",  "requirement": "SR-I2C-01" },
+    { "id": "SPI-f2-b7",     "protocol": "spi", "frame": 2, "bit": 7,             "expect": "detected",  "requirement": "SR-SPI-02" },
+    { "id": "I2C-b1-slow",   "protocol": "i2c", "byte": 1, "stretch_cycles": 6000,  "expect": "detected",  "requirement": "SR-I2C-02" },
+    { "id": "SPI-f7-b0",     "protocol": "spi", "frame": 7, "bit": 0,             "expect": "detected",  "requirement": "SR-SPI-03" },
+    { "id": "I2C-b3-tol",    "protocol": "i2c", "byte": 3, "stretch_cycles": 100,   "expect": "tolerated", "requirement": "SR-I2C-03" },
+    { "id": "SPI-f5-b3-dup", "protocol": "spi", "frame": 5, "bit": 3,             "expect": "detected",  "requirement": "SR-SPI-01" }
+  ]
+}
