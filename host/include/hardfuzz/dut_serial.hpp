@@ -23,17 +23,25 @@ inline DutResult parse_result(const std::string& text) {
     return r;
 }
 
-// Runs one DUT transaction by sending 'R' and reading back until a RESULT line arrives
-// (or a bounded number of empty reads = timeout). Works over any Transport, so it can
-// be exercised with a fake transport in tests and a real SerialTransport on hardware.
+// The protocol byte the combined firmware uses to pick which transaction to run.
+// Standalone firmwares ignore it (they only react to 'R'), so it's always safe to send.
+inline char proto_cmd(Protocol p) {
+    switch (p) { case Protocol::Spi: return 'S'; case Protocol::I2c: return 'I';
+                 case Protocol::Can: return 'C'; }
+    return 'R';
+}
+
+// Runs one DUT transaction by sending {protocol, 'R'} and reading back until a RESULT
+// line arrives (or a bounded number of empty reads = timeout). Works over any Transport,
+// so it can be exercised with a fake transport in tests and a real serial one on hardware.
 class SerialDutRunner : public DutRunner {
     Transport& t_;
     int        max_polls_;
 public:
     explicit SerialDutRunner(Transport& t, int max_polls = 400) : t_(t), max_polls_(max_polls) {}
 
-    DutResult run(const Fault&) override {
-        t_.send({'R'});                 // trigger one campaign on the STM32
+    DutResult run(const Fault& f) override {
+        t_.send({(uint8_t)proto_cmd(f.proto), (uint8_t)'R'});   // select protocol + run
         std::string buf;
         uint8_t chunk[128];
         for (int i = 0; i < max_polls_; ++i) {

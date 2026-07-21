@@ -1,4 +1,8 @@
-# firmware/ — STM32F446RE (NUCLEO) SPI master
+# firmware/ — STM32F446RE (NUCLEO) DUT masters
+
+Three apps for the NUCLEO DUT: `main.c` (SPI), `main_i2c.c` (I2C), and `main_multi.c`
+(combined SPI+I2C for `multi_inject_top`). Build one with `make APP=<name>`. The SPI app
+is documented first, then I2C, then the combined firmware.
 
 The STM32 is both the Device Under Test and the test instrument: it clocks SPI frames
 into the FPGA, reads back the echo, and self-reports over the ST-Link virtual COM
@@ -144,3 +148,23 @@ breadboard makes this easy). Slave address is `0x42`.
   "master timeout" case). Shorter stretches just show up as a slow byte.
 - The stretch is felt on the byte *after* the targeted one (the slave holds SCL low
   after that byte's ACK), so target byte 2 shows up as a slow byte 3.
+
+---
+
+# Combined firmware (multi_inject_top) — `main_multi.c`
+
+One firmware that drives **both** SPI and I2C, matching the FPGA's `multi_inject_top`,
+so you switch protocols with no reflash on either side. Wire both buses at once
+(SPI on JA1–4, I2C on JA7/JA8, shared GND) and select in software.
+
+```
+make APP=main_multi
+make flash APP=main_multi        # or: cp build/main_multi.bin /Volumes/<NUCLEO>/
+```
+
+Command protocol over the ST-Link VCP: **`S`** = select SPI, **`I`** = select I2C,
+**`R`** = run the selected protocol once (prints a `RESULT` line). The blue button runs
+the currently-selected protocol. The host `hardfuzz` CLI sends `{proto, 'R'}` per fault,
+so a single mixed SPI+I2C campaign can run live against `multi_inject_top` with zero
+reflashing. (The standalone firmwares ignore the leading `S`/`I` byte and just run on
+`R`, so the CLI works with all three firmwares unchanged.)
