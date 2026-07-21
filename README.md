@@ -25,7 +25,9 @@ as the device under test. Injector BOM ≈ $40.
 
 Every RTL core self-checks in simulation (`make sim`); the C++ host layer has its own
 test suite (`make -C host`). See **[HardFuzz_Refined_Plan.md](HardFuzz_Refined_Plan.md)**
-for the full design and month-by-month build log.
+for the design and month-by-month build log, and
+**[docs/HardFuzz_v1_Spec.md](docs/HardFuzz_v1_Spec.md)** for where it's headed as a
+product — the board I/O, how it attaches to any target, and the out-of-box experience.
 
 ## Layout
 
