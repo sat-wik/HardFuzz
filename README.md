@@ -182,10 +182,14 @@ master's timeout at 2 ms while the slave holds SCL low).
 **Verified in sim + hardware:** `spi_slave`, `bitflip_inj`, `spi_inject_top` + SPI
 firmware; `i2c_slave`, `timing_distort`, `i2c_inject_top` + I2C firmware; `ctrl_regs`,
 `arm.py`.
-**Verified in sim (not yet on hardware):** `frame_corrupt`, `can_inject_top`, and
-`multi_inject_top` — a combined **SPI + I2C** bitstream (`reg4` selects protocol) so you
-switch protocols by re-arming over UART instead of reflashing the FPGA. Build it with
-`make bit TOP=multi_inject_top`; `arm.py` / the `hardfuzz` CLI already set `reg4`.
+**Combined SPI+I2C — validated on hardware:** `multi_inject_top` (one bitstream, `reg4`
+selects protocol) + `main_multi.c` (one firmware, `S`/`I`/`R` commands) let a single
+**mixed** SPI+I2C campaign run live with **zero reflashing** — wire both buses once, and
+each fault swaps the active protocol on both sides. Proven end to end with
+`host/campaigns/multi.json` (7/7 pass).
+
+**Verified in sim (not yet on hardware):** `frame_corrupt`, `can_inject_top` — needs an
+SN65HVD230 transceiver to run on hardware.
 
 **Month 3 C++ campaign layer (`host/`) — built + self-tested:** header-only C++17
 (`FaultCampaign`, `CoverageTracker`, coverage-guided `Scheduler`, `RegClient`,
