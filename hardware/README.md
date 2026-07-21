@@ -10,6 +10,7 @@ repo root) into a plug-and-play product. Design captured here; the KiCad project
 |---|---|
 | [schematic_design.md](schematic_design.md) | the electrical design — block diagram, power tree, part selection, and net-by-net connections per block. **Start here.** |
 | [bom.csv](bom.csv) | bill of materials with part numbers, packages, and 100-unit costs (~$40 total) |
+| [kicad_parts.md](kicad_parts.md) | per-part KiCad symbol/footprint readiness — what's stock vs. what to grab/draw before capture |
 | `hardfuzz_v1/` | KiCad 8 project (`.kicad_pro/.kicad_sch/.kicad_pcb`) — created by drawing the schematic from the spec |
 
 Product-side rationale (attach modes, out-of-box experience) lives in
