@@ -61,7 +61,11 @@ reviewed with the **kicad-happy skill** — it detected every subsystem (regulat
 shifter, memory interface, crystals, clock, CAN, dividers, decoupling, ESD) at HIGH trust.
 The generator's `check()` catches accidental net shorts at build time (0 on the board).
 
-**Known / left for eeschema + PCB:** ~238 spare FPGA I/O read as unconnected (add NC flags
-in layout); parts carry no MPNs yet (schematic-side; they live in [../bom.csv](../bom.csv));
-the FTDI descriptor EEPROM is omitted (optional); footprint links need the exact installed
-footprint names. Routing/placement is done in the GUI — the generator guarantees the nets.
+**Review state (kicad-happy skill):** 1 error — SS-001 sourcing gate (passives still need
+MPNs; the 16 ICs/connectors carry them) — plus benign info. Cleared during this pass:
+no-connect flags on all spare FPGA/IC pins (238 → 0 unconnected warnings), grid-snapped
+endpoints, VBUS TVS (UC-002), correct PG/PWR_FLAG typing, and the FT core rail renamed
+`VDDCORE_FT` so PP-001 reads it as an internal rail (info, not error).
+
+**Left for eeschema + PCB:** passive MPNs (procurement), exact footprint links, the
+optional FTDI EEPROM, and routing/placement (GUI). The generator guarantees the netlist.

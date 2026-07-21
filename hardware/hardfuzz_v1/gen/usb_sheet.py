@@ -31,8 +31,8 @@ def populate(s):
     # ---------------- FT2232HQ ----------------
     s.add(FT, "U2", "FT2232HQ", 150, 120, {
         # power
-        "50": "+3V3", "49": "FT_1V8", "12": "FT_1V8", "37": "FT_1V8", "64": "FT_1V8",
-        "9": "FT_1V8", "4": "FT_1V8", "6": "FT_REF",
+        "50": "+3V3", "49": "VDDCORE_FT", "12": "VDDCORE_FT", "37": "VDDCORE_FT", "64": "VDDCORE_FT",
+        "9": "VDDCORE_FT", "4": "VDDCORE_FT", "6": "FT_REF",
         "20": "+3V3", "31": "+3V3", "42": "+3V3", "56": "+3V3",
         # grounds (incl AGND, thermal pad 65)
         "1": "GND", "5": "GND", "10": "GND", "11": "GND", "15": "GND", "25": "GND",
@@ -43,18 +43,18 @@ def populate(s):
         # channel A -> JTAG   (ADBUS0=TCK, 1=TDI, 2=TDO, 3=TMS)
         "16": "JTAG_TCK", "17": "JTAG_TDI", "18": "JTAG_TDO", "19": "JTAG_TMS",
         # channel B -> host UART (BDBUS0=TXD out, BDBUS1=RXD in)
-        "38": "HOST_TXD", "39": "HOST_RXD"})
+        "38": "HOST_TXD", "39": "HOST_RXD"}, nc_unused=True, mpn="FT2232HQ-REEL")
     rail("+3V3", 60, 205, "#PWR30")
     gnd(150, 200, "#PWR31")
     # decoupling row (below the FT symbol, spread horizontally so stubs don't overlap)
     cap("C40", "10uF", "+3V3", 55, 215); cap("C41", "100nF", "+3V3", 70, 215)
-    cap("C42", "4.7uF", "FT_1V8", 85, 215); cap("C43", "100nF", "FT_1V8", 100, 215)
+    cap("C42", "4.7uF", "VDDCORE_FT", 85, 215); cap("C43", "100nF", "VDDCORE_FT", 100, 215)
     cap("C44", "100nF", "FT_REF", 115, 215)
     s.add(R, "R40", "10k", 205, 90, {"1": "+3V3", "2": "FT_RESET"}, FP_R)  # RESET pull-up
 
     # ---------------- 12 MHz crystal ----------------
     s.add(XTAL, "Y2", "12MHz", 90, 160, {"1": "FT_OSCI", "3": "FT_OSCO", "2": "GND", "4": "GND"},
-          "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm")
+          "Crystal:Crystal_SMD_3225-4Pin_3.2x2.5mm", mpn="ABM8-12.000MHZ-B2-T")
     cap("C45", "18pF", "FT_OSCI", 60, 170); cap("C46", "18pF", "FT_OSCO", 75, 170)
 
     # ---------------- USB-C + ESD ----------------
@@ -63,7 +63,8 @@ def populate(s):
         "A4": "+5V", "A9": "+5V", "B4": "+5V", "B9": "+5V",
         "A5": "CC1", "B5": "CC2", "A6": "USB_DP", "B6": "USB_DP",
         "A7": "USB_DM", "B7": "USB_DM"},
-        "Connector_USB:USB_C_Receptacle_GCT_USB4085")
+        "Connector_USB:USB_C_Receptacle_GCT_USB4085",
+        nc_unused=True, mpn="USB4085-GF-A")   # USB3 TX/RX + SBU unused (USB2 only)
     rail("+5V", 300, 55, "#PWR32")
     gnd(300, 175, "#PWR33")
     s.add(R, "R41", "5.1k", 260, 90, {"1": "CC1", "2": "GND"}, FP_R)
@@ -73,13 +74,13 @@ def populate(s):
           "Diode_SMD:D_SMA")   # VBUS ESD/surge clamp (skill UC-002)
     s.add(ESD, "D30", "USBLC6-2SC6", 230, 130,
           {"1": "USB_DP", "6": "USB_DP", "3": "USB_DM", "4": "USB_DM",
-           "5": "+5V", "2": "GND"}, "Package_TO_SOT_SMD:SOT-23-6")
+           "5": "+5V", "2": "GND"}, "Package_TO_SOT_SMD:SOT-23-6", mpn="USBLC6-2SC6")
 
     # ---------------- QSPI config flash ----------------
     s.add(FLASH, "U3", "MX25L3233F", 400, 120, {
         "16": "FLASH_CCLK", "7": "FLASH_CS", "15": "FLASH_D0", "8": "FLASH_D1",
         "9": "FLASH_D2", "1": "FLASH_D3", "2": "+3V3", "10": "GND"},
-        "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm")
+        "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm", nc_unused=True, mpn="MX25L3233FM2I-08G")
     rail("+3V3", 400, 70, "#PWR34")
     gnd(400, 165, "#PWR35")
     s.add(R, "R43", "10k", 435, 95, {"1": "+3V3", "2": "FLASH_CS"}, FP_R)

@@ -151,13 +151,16 @@ def uid():
 
 
 class Comp:
-    def __init__(self, lib_id, ref, value, x, y, nets, footprint="", rot=0, unit=1, stub=True):
+    def __init__(self, lib_id, ref, value, x, y, nets, footprint="", rot=0, unit=1,
+                 stub=True, nc_unused=False, mpn=""):
         self.lib_id, self.ref, self.value = lib_id, ref, value
         self.x, self.y, self.rot = float(x), float(y), rot
         self.nets = nets            # {pin_number: net_name}
         self.footprint = footprint
         self.unit = unit
         self.stub = stub
+        self.nc_unused = nc_unused  # place no-connect flags on pins with no net
+        self.mpn = mpn
         self.uuid = uid()
 
     def pin_xy(self, px, py):
@@ -227,6 +230,9 @@ class Schematic:
         fp = c.footprint
         L(f'\t\t(property "Footprint" "{fp}" (at {c.x:.2f} {c.y:.2f} 0)')
         L(f'\t\t\t(effects (font (size 1.27 1.27)) (hide yes)))')
+        if c.mpn:
+            L(f'\t\t(property "MPN" "{c.mpn}" (at {c.x:.2f} {c.y:.2f} 0)')
+            L(f'\t\t\t(effects (font (size 1.27 1.27)) (hide yes)))')
         # pin uuids
         for (num, px, py, ang) in self.lib.pins(c.lib_id, c.unit):
             L(f'\t\t(pin "{num}" (uuid "{uid()}"))')
@@ -273,6 +279,16 @@ class Schematic:
                     f'\t\t(uuid "{uid()}"))')
         return "\n".join(out)
 
+    def _no_connects(self, c):
+        """No-connect flags on this unit's pins that carry no net (intentional spares)."""
+        out = []
+        for (num, px, py, ang) in self.lib.pins(c.lib_id, c.unit):
+            if c.nets.get(num):
+                continue
+            x, y = c.pin_xy(px, py)
+            out.append(f'\t(no_connect (at {x:.2f} {y:.2f}) (uuid "{uid()}"))')
+        return "\n".join(out)
+
     def render(self):
         used = {}                               # raw() flattens extends, so each
         for c in self.comps:                    # lib_id embeds as a self-contained symbol
@@ -298,6 +314,10 @@ class Schematic:
             lbl = self._labels(c)
             if lbl:
                 parts.append(lbl)
+            if c.nc_unused:
+                nc = self._no_connects(c)
+                if nc:
+                    parts.append(nc)
         parts.append(f'\t(sheet_instances\n\t\t(path "{self._sheet_path}" (page "{self.page}")))')
         parts.append('\t(embedded_fonts no)')
         parts.append(')')

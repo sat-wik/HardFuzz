@@ -23,7 +23,8 @@ def populate(s):
     # transceiver
     s.add(XCVR, "U9", "SN65HVD230", 150, 80,
           {"1": "CAN_TXD", "2": "GND", "3": "+3V3", "4": "CAN_RXD",
-           "6": "CANL", "7": "CANH", "8": "CAN_RS"})   # pin 5 Vref: open
+           "6": "CANL", "7": "CANH", "8": "CAN_RS"},   # pin 5 Vref: NC
+          nc_unused=True, mpn="SN65HVD230DR")
     s.add("power:+3V3", "#PWR11", "+3V3", 150, 45, {"1": "+3V3"})
     gnd(150, 112, "#PWR12")
 

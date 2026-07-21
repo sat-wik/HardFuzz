@@ -2,7 +2,7 @@
 	(version 20260306)
 	(generator "hardfuzz-kigen")
 	(generator_version "10.0")
-	(uuid "d4330dca-89ae-4793-b016-d6c0afd5f7c5")
+	(uuid "2a7cfa2e-8c6d-45dc-afe3-6b5c0cf25bc7")
 	(paper "A3")
 	(title_block
 		(title "HardFuzz v1"))
@@ -18,14 +18,14 @@
 		(fields_autoplaced yes)
 		(stroke (width 0.1524) (type solid))
 		(fill (color 0 0 0 0.0000))
-		(uuid "2b56255e-fb99-45b2-9596-2deded568ede")
+		(uuid "983420b8-034b-4562-b89c-83ece7f7d099")
 		(property "Sheetname" "FPGA" (at 30 29 0)
 			(effects (font (size 1.524 1.524)) (justify left bottom)))
 		(property "Sheetfile" "fpga.kicad_sch" (at 30 71 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
 		(instances
 			(project "hardfuzz_v1"
-				(path "/d4330dca-89ae-4793-b016-d6c0afd5f7c5" (page "2"))))
+				(path "/2a7cfa2e-8c6d-45dc-afe3-6b5c0cf25bc7" (page "2"))))
 	)
 	(sheet
 		(at 120 30)
@@ -37,14 +37,14 @@
 		(fields_autoplaced yes)
 		(stroke (width 0.1524) (type solid))
 		(fill (color 0 0 0 0.0000))
-		(uuid "a72e20fd-d877-439f-80f6-2a874e5149c7")
+		(uuid "18628cb1-7a38-4cc8-a135-5f2eb8b13df6")
 		(property "Sheetname" "Power" (at 120 29 0)
 			(effects (font (size 1.524 1.524)) (justify left bottom)))
 		(property "Sheetfile" "power.kicad_sch" (at 120 71 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
 		(instances
 			(project "hardfuzz_v1"
-				(path "/d4330dca-89ae-4793-b016-d6c0afd5f7c5" (page "3"))))
+				(path "/2a7cfa2e-8c6d-45dc-afe3-6b5c0cf25bc7" (page "3"))))
 	)
 	(sheet
 		(at 210 30)
@@ -56,14 +56,14 @@
 		(fields_autoplaced yes)
 		(stroke (width 0.1524) (type solid))
 		(fill (color 0 0 0 0.0000))
-		(uuid "7bbb6fde-0e0c-4ca5-9fe9-54ff7debdf15")
+		(uuid "d23c023f-f11d-4da9-bd6e-47a3c47eae82")
 		(property "Sheetname" "CAN" (at 210 29 0)
 			(effects (font (size 1.524 1.524)) (justify left bottom)))
 		(property "Sheetfile" "can.kicad_sch" (at 210 71 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
 		(instances
 			(project "hardfuzz_v1"
-				(path "/d4330dca-89ae-4793-b016-d6c0afd5f7c5" (page "4"))))
+				(path "/2a7cfa2e-8c6d-45dc-afe3-6b5c0cf25bc7" (page "4"))))
 	)
 	(sheet
 		(at 30 100)
@@ -75,14 +75,14 @@
 		(fields_autoplaced yes)
 		(stroke (width 0.1524) (type solid))
 		(fill (color 0 0 0 0.0000))
-		(uuid "834323ff-b24e-4edf-88f5-7fa6c7e5c4d6")
+		(uuid "0e7f8766-b4f4-4bfe-8704-205b43950dd3")
 		(property "Sheetname" "Level Shift" (at 30 99 0)
 			(effects (font (size 1.524 1.524)) (justify left bottom)))
 		(property "Sheetfile" "levelshift.kicad_sch" (at 30 141 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
 		(instances
 			(project "hardfuzz_v1"
-				(path "/d4330dca-89ae-4793-b016-d6c0afd5f7c5" (page "5"))))
+				(path "/2a7cfa2e-8c6d-45dc-afe3-6b5c0cf25bc7" (page "5"))))
 	)
 	(sheet
 		(at 120 100)
@@ -94,14 +94,14 @@
 		(fields_autoplaced yes)
 		(stroke (width 0.1524) (type solid))
 		(fill (color 0 0 0 0.0000))
-		(uuid "c378198d-a4f8-4629-9cee-258881763e8e")
+		(uuid "065d88b2-ea80-416f-a3f0-65f3427befa7")
 		(property "Sheetname" "USB" (at 120 99 0)
 			(effects (font (size 1.524 1.524)) (justify left bottom)))
 		(property "Sheetfile" "usb.kicad_sch" (at 120 141 0)
 			(effects (font (size 1.27 1.27)) (justify left top)))
 		(instances
 			(project "hardfuzz_v1"
-				(path "/d4330dca-89ae-4793-b016-d6c0afd5f7c5" (page "6"))))
+				(path "/2a7cfa2e-8c6d-45dc-afe3-6b5c0cf25bc7" (page "6"))))
 	)
 	(sheet_instances
 		(path "/" (page "1")))

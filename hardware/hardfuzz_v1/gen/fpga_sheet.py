@@ -89,7 +89,8 @@ def populate(s):
     locs = [(150, 150), (420, 150), (690, 150), (150, 470), (420, 470)]
     for u, (x, y) in enumerate(locs, start=1):
         s.add(FPGA, "U1", "XC7A35T-CSG324", x, y, nets,
-              "Package_BGA:Xilinx_CSG324", unit=u, stub=False)
+              "Package_BGA:Xilinx_CSG324", unit=u, stub=False,
+              nc_unused=True, mpn="XC7A35T-1CSG324C")
 
     # rails for reference on this sheet
     rail("+3V3", 700, 470, "#PWR40"); rail("+1V0", 730, 470, "#PWR41")
@@ -97,7 +98,7 @@ def populate(s):
 
     # ---- 12 MHz oscillator ----
     s.add(OSC, "Y1", "12MHz", 700, 540, {"1": "+3V3", "2": "GND", "3": "CLK12", "4": "+3V3"},
-          "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm")
+          "Oscillator:Oscillator_SMD_Abracon_ASE-4Pin_3.2x2.5mm", mpn="ASE-12.000MHZ-LC-T")
     cap("C50", "100nF", "+3V3", 730, 555)
 
     # ---- config housekeeping: pull-ups + PROG button + DONE LED ----

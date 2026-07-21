@@ -18,14 +18,17 @@ import fpga_sheet, power_sheet, can_sheet, levelshift_sheet, usb_sheet
 HERE = os.path.join(os.path.dirname(__file__), "..")
 # (sheet name, file, populate fn, paper size)
 BLOCKS = [
-    ("FPGA",        "fpga.kicad_sch",       fpga_sheet.populate,       "A2"),
+    ("FPGA",        "fpga.kicad_sch",       fpga_sheet.populate,       "A1"),
     ("Power",       "power.kicad_sch",      power_sheet.populate,      "A3"),
     ("CAN",         "can.kicad_sch",        can_sheet.populate,        "A4"),
     ("Level Shift", "levelshift.kicad_sch", levelshift_sheet.populate, "A3"),
     ("USB",         "usb.kicad_sch",        usb_sheet.populate,        "A3"),
 ]
 RAILS = {"+5V", "+3V3", "+1V0", "+1V8", "GND"}   # global already (power symbols)
-FLAGS = ["+3V3", "+1V0", "+1V8", "VREF", "FT_1V8", "FT_REF"]
+# rails needing a PWR_FLAG: regulator outputs (driven through the inductor, not a
+# power-output pin) + VREF (sourced externally). FT_1V8/FT_REF are driven by the
+# FT2232's own VREGOUT/REF outputs, so they must NOT get a flag (double-driver).
+FLAGS = ["+3V3", "+1V0", "+1V8", "VREF"]
 
 
 def _block_nets(fn):
