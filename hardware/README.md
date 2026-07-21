@@ -17,8 +17,9 @@ Product-side rationale (attach modes, out-of-box experience) lives in
 
 ## Design approach
 
-Reuse the **proven Cmod A7 core** (Artix-7 XC7A35T-CPG236 + FT2232H USB-JTAG/UART + QSPI
-config) so the bitstream we already run on hardware drops on unchanged, and add the
+Reuse the **proven Cmod A7 core** (Artix-7 XC7A35T die + FT2232H USB-JTAG/UART + QSPI
+config; FTG256 package for easier fan-out) so the RTL we already run on hardware drops on
+unchanged (rebuilt against a new pinout), and add the
 productization layer: level-shifted bus I/O with `VREF` sensing, an onboard SN65HVD230 CAN
 transceiver, and keyed target connectors (Qwiic / CAN screw terminal / SPI interposer).
 

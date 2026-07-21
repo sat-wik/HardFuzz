@@ -1,9 +1,11 @@
 ref,qty,part,value,package,function,unit_usd_100,notes
-U1,1,XC7A35T-1CPG236C,,BGA-236,FPGA fault-injection engine,18.00,same die/package as Cmod A7 (bitstream parity)
+U1,1,XC7A35T-1FTG256C,,BGA-256,FPGA fault-injection engine,19.00,1.0mm pitch for 4-layer fan-out (see design sec.10.2)
 U2,1,FT2232HQ-REEL,,QFN-64,USB2.0 dual bridge: JTAG config + host UART,5.00,ch A=JTAG ch B=UART
 U3,1,N25Q032A13ESF40,32Mb,SOIC-8,QSPI configuration flash,0.55,holds preloaded multi-protocol bitstream
 U4,1,SN65HVD230DR,,SOIC-8,CAN transceiver (3V3),1.20,logic side 3V3 direct to FPGA
-U5,1,TXS0108EPWR,,TSSOP-20,8-bit auto-dir level shifter (bus I/O),0.75,VCCA=3V3 VCCB=VREF
+U5,1,TXS0108EPWR,,TSSOP-20,8-bit auto-dir level shifter (bus I/O),0.75,VCCA=3V3 VCCB=VREF; needs VCCA<=VCCB so VREF 3.3-5V
+U5b,4,74LVC1T45,,SOT-363,directional shifter for SPI lines (DNP),0.12,DNP high-speed-SPI option (see design sec.10.1)
+D4,1,TVS 5.5V,,SOD-923,VREF overvoltage clamp,0.10,protects TXS0108E VCCB at 5V targets
 U6,1,AP63203WU-7,,TSOT-23-6,5V->3V3 buck 2A,0.45,main logic rail
 U7,1,TLV62569DBVR,,SOT-23-5,3V3->1V0 buck 2A,0.55,VCCINT/VCCBRAM
 U8,1,AP2112K-1.8TRG1,,SOT-23-5,3V3->1V8 LDO,0.20,VCCAUX/VCCADC

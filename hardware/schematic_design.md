@@ -6,10 +6,11 @@ block. This is the engineering; symbol placement and routing in KiCad are mechan
 this is fixed. Pairs with [HardFuzz_v1_Spec.md](../docs/HardFuzz_v1_Spec.md) (the product
 side) and [bom.csv](bom.csv) (part numbers + cost).
 
-Design target: reuse the **proven Cmod A7 core** (Artix-7 XC7A35T-CPG236 + FT2232H
-USB-JTAG/UART + QSPI config) so the bitstream we already run drops on unchanged, and add
-the productization: level-shifted bus I/O with `VREF` sensing, an onboard CAN transceiver,
-and keyed target connectors.
+Design target: reuse the **proven Cmod A7 core** (Artix-7 XC7A35T die + FT2232H
+USB-JTAG/UART + QSPI config) so the RTL we already run drops on unchanged (rebuilt against
+a new `.xdc`), and add the productization: level-shifted bus I/O with `VREF` sensing, an
+onboard CAN transceiver, and keyed target connectors. Package moves to FTG256 for easier
+fan-out (see §10.2).
 
 ---
 
@@ -64,9 +65,10 @@ VCCAUX 1×47µF + 4×4.7µF; each VCCO bank 1×4.7µF + 0.47µF/pin group; 100nF
 
 ---
 
-## 3. FPGA — XC7A35T-1CPG236C
+## 3. FPGA — XC7A35T-1FTG256C
 
-Same die/package as the Cmod A7, so pin intent carries over. Key connections:
+Same die as the Cmod A7 (FTG256 package for fan-out — §10.2); the signal *intent* carries
+over, pin *numbers* are reassigned in a fresh `.xdc`. Key connections:
 
 - **Power:** VCCINT/VCCBRAM=1V0, VCCAUX/VCCADC=1V8, VCCO (banks 14/15/16/34/35)=3V3.
 - **Config:** master SPI (QSPI) boot — `M[2:0]=001`. Config bank (bank 0) at 3V3.
@@ -141,9 +143,12 @@ the host UART the `ctrl_regs` interface already speaks.
     TXS0108E is the default.
 - **I2C pull-ups:** 4.7k from `SDA_B`/`SCL_B` to `VREF` (open-drain needs them on the
   target side); pads for stronger values.
-- **VREF input & sense:** `VREF` pin → TXS0108E VCCB and CAN? (no — CAN is 3V3 fixed).
-  Sense via a divider (e.g. 2:1) into an XADC channel so firmware reads the target voltage
-  and the app can warn "VREF not connected." Bulk 1µF on `VREF`.
+- **VREF input & sense:** `VREF` pin → TXS0108E VCCB only (CAN is 3V3-fixed, so it doesn't
+  use VREF). Per §10.3 the A-side VCCA is 3.3 V and the part needs VCCA ≤ VCCB, so **v1
+  supports VREF = 3.3–5 V**; a **5.5 V TVS** clamps it and a bleeder resistor keeps VCCB
+  from floating when VREF is left unconnected. Sense via a 2:1 divider into an XADC channel
+  so firmware reads the target voltage and the app can warn "VREF not connected / out of
+  range." Bulk 1µF on `VREF`.
 
 ---
 
@@ -173,17 +178,43 @@ VREF appears on every target connector so the user makes one connection.
 
 ---
 
-## 10. Open decisions (resolve before layout)
+## 10. Resolved decisions
 
-1. **SPI shifter:** ship TXS0108E only, or populate 74LVC1T45 directional pads for
-   high-speed SPI? (Default: TXS0108E; DNP the directional option.)
-2. **Package:** stay CPG236 (proven, reflow-only BGA) vs. move to FTG256 for easier
-   fan-out. CPG236 keeps bitstream parity — recommended for v1.
-3. **VREF max:** clamp to 5 V (TXS0108E VCCB max 3.6 V on the A-side ref but B-side to
-   5.5 V — verify the exact ratings and add a TVS if exposing 5 V targets).
-4. **Inline SPI pass-through:** v1 exposes IN/OUT header pads; whether the FPGA actively
-   buffers pass-through vs. relies on external strap is a firmware/routing choice.
-5. **CAN termination:** fixed 120Ω vs. jumper-selectable (recommended: jumper, for tap use).
+Each open item from the design review, decided for v1 with rationale. Two ripple back into
+earlier sections (flagged) and are reflected there and in [bom.csv](bom.csv).
+
+**1. SPI level shifter → TXS0108E default; DNP 74LVC1T45 pads on the 4 SPI lines.**
+Our validated SPI is 500 kHz and I2C 100 kHz — both well inside the TXS0108E's auto-
+direction range, so one 8-bit part covers all bus lines on v1. SPI's four lines are also
+statically directional (SCK/MOSI/CS out, MISO in), so lay out DNP footprints for per-line
+74LVC1T45 directional shifters; a high-speed-SPI build then swaps parts with **no respin**.
+(I2C's SDA must stay auto-direction → keep it on the TXS0108E.)
+
+**2. FPGA package → FTG256 (1.0 mm), not CPG236.** *(ripples into §3, BOM U1)*
+The RTL is package-independent; only the `.xdc` pin map changes, and we rebuild the
+bitstream for the custom board regardless — so CPG236's "bitstream parity" argument is
+weak. FTG256's 1.0 mm pitch escapes cleanly on a standard 4-layer board with normal design
+rules and reflows with a plain stencil, whereas CPG236's 0.5 mm pitch pushes toward
+HDI/via-in-pad and is a real first-board yield risk. Same XC7A35T die.
+
+**3. Target voltage → 3.3 V and 5 V for v1; defer 1.8 V.** *(ripples into §2, §7, spec)*
+The TXS0108E requires **VCCA ≤ VCCB**. With the FPGA bus bank (VCCA) at 3.3 V, VREF (VCCB)
+must be ≥ 3.3 V — so v1 cleanly covers **3.3 V and 5 V** targets. Supporting 1.8 V targets
+would need the shifter A-side at 1.8 V, i.e. a **dedicated 1.8 V FPGA bus bank**
+(VCCA = 1.8 ≤ any VREF ≥ 1.8) with CAN/config/host kept on the 3.3 V banks — a genuine
+power-tree change, deferred to a rev. Clamp VREF with a 5.5 V TVS and add a bleeder so an
+unconnected VREF can't float VCCB. **The earlier "1.8 / 3.3 / 5 V" claim is corrected to
+"3.3–5 V (v1)"** in the product spec.
+
+**4. Inline SPI pass-through → route both IN and OUT to FPGA I/O; ship emulation as default.**
+Bring the SPI/UART IN *and* OUT pins to FPGA pins so inline pass-through (forward IN→OUT,
+inject by override) becomes a firmware feature addable **without a respin**. v1 ships with
+the **validated peripheral-emulation** path (FPGA = slave) as the default; inline
+pass-through is experimental until proven on hardware.
+
+**5. CAN termination → jumper-selectable, default OFF.** A fault injector usually taps a bus
+that is *already* terminated; a fixed 120 Ω would over-terminate it. The jumper enables the
+split-120 Ω only when HardFuzz is an end node.
 
 ---
 

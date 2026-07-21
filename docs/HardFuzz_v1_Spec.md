@@ -27,7 +27,7 @@ controller under test is an STM32, PIC, ESP32, or an automotive Renesas part —
 | **FPGA** (Xilinx Artix-7 XC7A35T) | real-time fault-injection engine — fast/precise enough to hit an exact bit at an exact microsecond on a live bus |
 | **USB-C** (FTDI bridge) | single cable to the host: control, campaigns, firmware updates |
 | **CAN transceiver** (SN65HVD230) | onboard, so CAN is just two screw terminals to the bus |
-| **Level shifters** (TXS0108E) + `VREF` sense | adapt every bus line to the target's logic level (1.8 / 3.3 / 5 V) automatically |
+| **Level shifters** (TXS0108E) + `VREF` sense | adapt every bus line to the target's logic level (3.3 / 5 V on v1; 1.8 V a later rev — see [schematic §10.3](../hardware/schematic_design.md)) |
 | **Bus monitor** | passive capture that logs traffic and marks the injected fault — closes the loop without a separate logic analyzer |
 | **Pre-programmed flash** | ships with the multi-protocol bitstream loaded — no FPGA toolchain, ever |
 
