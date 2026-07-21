@@ -1,0 +1,543 @@
+{
+  "name": "SPI bit-flip sweep",
+  "target": "STM32F446 SPI master vs spi_inject_top",
+  "standard": "IEC 61508",
+  "faults": [
+    {
+      "id": "SPI-f1-b0",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b1",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b2",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b3",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b4",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b5",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b6",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f1-b7",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f2-b0",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b1",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b2",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b3",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b4",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b5",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b6",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f2-b7",
+      "protocol": "spi",
+      "frame": 2,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F2"
+    },
+    {
+      "id": "SPI-f3-b0",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b1",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b2",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b3",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b4",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b5",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b6",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f3-b7",
+      "protocol": "spi",
+      "frame": 3,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F3"
+    },
+    {
+      "id": "SPI-f4-b0",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b1",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b2",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b3",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b4",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b5",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b6",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f4-b7",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f5-b0",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b1",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b2",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b3",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b4",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b5",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b6",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f5-b7",
+      "protocol": "spi",
+      "frame": 5,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F5"
+    },
+    {
+      "id": "SPI-f6-b0",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b1",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b2",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b3",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b4",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b5",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b6",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f6-b7",
+      "protocol": "spi",
+      "frame": 6,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F6"
+    },
+    {
+      "id": "SPI-f7-b0",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b1",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b2",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b3",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b4",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b5",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b6",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f7-b7",
+      "protocol": "spi",
+      "frame": 7,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F7"
+    },
+    {
+      "id": "SPI-f8-b0",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 0,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b1",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 1,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b2",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 2,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b3",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b4",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 4,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b5",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 5,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b6",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 6,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f8-b7",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 7,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    },
+    {
+      "id": "SPI-f1-retest",
+      "protocol": "spi",
+      "frame": 1,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F1"
+    },
+    {
+      "id": "SPI-f4-retest",
+      "protocol": "spi",
+      "frame": 4,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F4"
+    },
+    {
+      "id": "SPI-f8-retest",
+      "protocol": "spi",
+      "frame": 8,
+      "bit": 3,
+      "expect": "detected",
+      "requirement": "SR-SPI-F8"
+    }
+  ]
+}
