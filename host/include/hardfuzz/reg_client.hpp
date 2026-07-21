@@ -19,21 +19,26 @@ public:
     }
     void disarm() { write(0, 0x00); }
 
+    // reg4 selects the protocol on the combined multi_inject_top; the single-protocol
+    // tops ignore it, so writing it is always safe.
     void arm(const Fault& f) {
         switch (f.proto) {
-            case Protocol::Spi:  // reg3=bit, reg1/2=frame, reg0=enable
+            case Protocol::Spi:  // reg4=0, reg3=bit, reg1/2=frame, reg0=enable
+                write(4, 0);
                 write(3, (uint8_t)(f.b & 0xFF));
                 write(1, (uint8_t)(f.a & 0xFF));
                 write(2, (uint8_t)((f.a >> 8) & 0xFF));
                 write(0, 0x01);
                 break;
-            case Protocol::I2c:  // reg1=byte, reg2/3=stretch, reg0=enable
+            case Protocol::I2c:  // reg4=1, reg1=byte, reg2/3=stretch, reg0=enable
+                write(4, 1);
                 write(1, (uint8_t)(f.a & 0xFF));
                 write(2, (uint8_t)(f.b & 0xFF));
                 write(3, (uint8_t)((f.b >> 8) & 0xFF));
                 write(0, 0x01);
                 break;
-            case Protocol::Can:  // reg1/2=bit, reg3=width, reg0=enable
+            case Protocol::Can:  // reg4=2, reg1/2=bit, reg3=width, reg0=enable
+                write(4, 2);
                 write(1, (uint8_t)(f.a & 0xFF));
                 write(2, (uint8_t)((f.a >> 8) & 0xFF));
                 write(3, (uint8_t)(f.b & 0xFF));

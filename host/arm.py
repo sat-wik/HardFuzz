@@ -66,18 +66,21 @@ def main():
     args = ap.parse_args()
     with serial.Serial(args.port, args.baud, timeout=0.5) as ser:
         if args.cmd == "arm":
+            reg_write(ser, 4, 0)               # protocol = SPI (combined top; ignored by standalone)
             reg_write(ser, 3, args.bit)
             reg_write(ser, 1, args.frame & 0xFF)
             reg_write(ser, 2, (args.frame >> 8) & 0xFF)
             reg_write(ser, 0, 0x01)            # enable
             print(f"armed: flip frame {args.frame}, bit {args.bit} (MISO)")
         elif args.cmd == "i2c":
+            reg_write(ser, 4, 1)               # protocol = I2C
             reg_write(ser, 1, args.byte & 0xFF)          # target_byte
             reg_write(ser, 2, args.stretch & 0xFF)       # stretch_len[7:0]
             reg_write(ser, 3, (args.stretch >> 8) & 0xFF)  # stretch_len[15:8]
             reg_write(ser, 0, 0x01)            # enable
             print(f"armed: stretch byte {args.byte} for {args.stretch} cycles (~{args.stretch/12:.0f} us)")
         elif args.cmd == "can":
+            reg_write(ser, 4, 2)               # protocol = CAN
             reg_write(ser, 1, args.bit & 0xFF)           # target_bit[7:0]
             reg_write(ser, 2, (args.bit >> 8) & 0xFF)    # target_bit[15:8]
             reg_write(ser, 3, args.width & 0xFF)         # width

@@ -42,6 +42,7 @@ rtl/            Verilog sources
   spi_inject_top.v  Month 1 integration: host-armed SPI bit-flip injection
   i2c_inject_top.v  Month 2 integration: host-armed I2C clock-stretch injection
   can_inject_top.v  Month 2 integration: host-armed CAN frame corruption (sim-only)
+  multi_inject_top.v Month 4: combined SPI+I2C in one bitstream (reg4 selects protocol)
 sim/            testbenches + Icarus runner (primary verifier for now)
 constraints/    cmod_a7.xdc  (pinout; SPI on Pmod JA)
 scripts/        Vivado batch build / program TCL
@@ -181,7 +182,10 @@ master's timeout at 2 ms while the slave holds SCL low).
 **Verified in sim + hardware:** `spi_slave`, `bitflip_inj`, `spi_inject_top` + SPI
 firmware; `i2c_slave`, `timing_distort`, `i2c_inject_top` + I2C firmware; `ctrl_regs`,
 `arm.py`.
-**Verified in sim (not yet on hardware):** `frame_corrupt`, `can_inject_top`.
+**Verified in sim (not yet on hardware):** `frame_corrupt`, `can_inject_top`, and
+`multi_inject_top` — a combined **SPI + I2C** bitstream (`reg4` selects protocol) so you
+switch protocols by re-arming over UART instead of reflashing the FPGA. Build it with
+`make bit TOP=multi_inject_top`; `arm.py` / the `hardfuzz` CLI already set `reg4`.
 
 **Month 3 C++ campaign layer (`host/`) — built + self-tested:** header-only C++17
 (`FaultCampaign`, `CoverageTracker`, coverage-guided `Scheduler`, `RegClient`,

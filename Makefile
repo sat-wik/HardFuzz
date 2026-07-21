@@ -9,7 +9,7 @@ PART ?= xc7a35tcpg236-1
 sim: sim-all
 
 sim-all:
-	@for tb in tb_uart_echo tb_pulse_meter tb_ctrl_regs tb_spi_inject tb_i2c_inject tb_can_inject; do \
+	@for tb in tb_uart_echo tb_pulse_meter tb_ctrl_regs tb_spi_inject tb_i2c_inject tb_can_inject tb_multi_inject; do \
 	  echo "=== $$tb ==="; ./sim/run_icarus.sh $$tb | grep -E 'PASS|FAIL|ALL|TEST'; echo; \
 	done
 
@@ -30,6 +30,9 @@ sim-i2c:
 
 sim-can:
 	./sim/run_icarus.sh tb_can_inject
+
+sim-multi:
+	./sim/run_icarus.sh tb_multi_inject
 
 # Run a sim and open its waveform in Surfer.  make wave WAVE=tb_spi_inject
 WAVE ?= tb_spi_inject
