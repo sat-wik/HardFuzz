@@ -1,0 +1,12 @@
+{
+  "name": "I2C clock-stretch campaign",
+  "target": "STM32F446 I2C master vs i2c_inject_top (slave 0x42)",
+  "standard": "IEC 61508",
+  "faults": [
+    { "id": "I2C-timeout-b2", "protocol": "i2c", "byte": 2, "stretch_cycles": 60000, "expect": "detected",  "requirement": "SR-I2C-01" },
+    { "id": "I2C-slow-b3",    "protocol": "i2c", "byte": 3, "stretch_cycles": 6000,  "expect": "detected",  "requirement": "SR-I2C-02" },
+    { "id": "I2C-slow-b1",    "protocol": "i2c", "byte": 1, "stretch_cycles": 2400,  "expect": "detected",  "requirement": "SR-I2C-03" },
+    { "id": "I2C-timeout-dup","protocol": "i2c", "byte": 2, "stretch_cycles": 60000, "expect": "detected",  "requirement": "SR-I2C-01" },
+    { "id": "I2C-tolerate",   "protocol": "i2c", "byte": 3, "stretch_cycles": 100,   "expect": "tolerated", "requirement": "SR-I2C-04" }
+  ]
+}

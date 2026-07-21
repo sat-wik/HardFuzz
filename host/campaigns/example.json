@@ -1,0 +1,14 @@
+{
+  "name": "mixed-protocol smoke campaign",
+  "target": "STM32F446 (SPI flash + I2C EEPROM + CAN node)",
+  "standard": "IEC 61508",
+  "faults": [
+    { "id": "SPI-crc-hdr",  "protocol": "spi", "frame": 5,  "bit": 3,     "expect": "detected",  "requirement": "SR-SPI-01" },
+    { "id": "SPI-crc-hdr2", "protocol": "spi", "frame": 5,  "bit": 3,     "expect": "detected",  "requirement": "SR-SPI-01" },
+    { "id": "SPI-data-msb", "protocol": "spi", "frame": 12, "bit": 7,     "expect": "detected",  "requirement": "SR-SPI-02" },
+    { "id": "I2C-stall",    "protocol": "i2c", "byte": 2,   "stretch_cycles": 60000, "expect": "detected",  "requirement": "SR-I2C-01" },
+    { "id": "I2C-slow",     "protocol": "i2c", "byte": 3,   "stretch_cycles": 2400,  "expect": "tolerated", "requirement": "SR-I2C-02" },
+    { "id": "CAN-crc",      "protocol": "can", "bit": 40,   "width": 1,    "expect": "detected",  "requirement": "SR-CAN-01" },
+    { "id": "CAN-stuff",    "protocol": "can", "bit": 20,   "width": 6,    "expect": "detected",  "requirement": "SR-CAN-02" }
+  ]
+}

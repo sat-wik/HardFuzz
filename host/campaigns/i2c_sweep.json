@@ -1,0 +1,295 @@
+{
+  "name": "I2C clock-stretch sweep",
+  "target": "STM32F446 I2C master vs i2c_inject_top (slave 0x42)",
+  "standard": "IEC 61508",
+  "faults": [
+    {
+      "id": "I2C-b0-s100",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 100,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s300",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 300,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s1200",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 1200,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s3000",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 3000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s6000",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 6000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s12000",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 12000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s30000",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 30000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b0-s60000",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b1-s100",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 100,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s300",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 300,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s1200",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 1200,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s3000",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 3000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s6000",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 6000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s12000",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 12000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s30000",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 30000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b1-s60000",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b2-s100",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 100,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s300",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 300,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s1200",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 1200,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s3000",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 3000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s6000",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 6000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s12000",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 12000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s30000",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 30000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b2-s60000",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b3-s100",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 100,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s300",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 300,
+      "expect": "tolerated",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s1200",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 1200,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s3000",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 3000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s6000",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 6000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s12000",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 12000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s30000",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 30000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b3-s60000",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    },
+    {
+      "id": "I2C-b0-retest",
+      "protocol": "i2c",
+      "byte": 0,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B0"
+    },
+    {
+      "id": "I2C-b1-retest",
+      "protocol": "i2c",
+      "byte": 1,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B1"
+    },
+    {
+      "id": "I2C-b2-retest",
+      "protocol": "i2c",
+      "byte": 2,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B2"
+    },
+    {
+      "id": "I2C-b3-retest",
+      "protocol": "i2c",
+      "byte": 3,
+      "stretch_cycles": 60000,
+      "expect": "detected",
+      "requirement": "SR-I2C-B3"
+    }
+  ]
+}
