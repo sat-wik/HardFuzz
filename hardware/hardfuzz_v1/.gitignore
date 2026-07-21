@@ -13,9 +13,3 @@ _autosave-*
 ~*.lck
 *.lck
 
-# per-block sheet outputs are regenerable; board.kicad_sch is the deliverable
-power.kicad_sch
-can.kicad_sch
-levelshift.kicad_sch
-usb.kicad_sch
-fpga.kicad_sch

@@ -174,6 +174,23 @@ class Schematic:
         self.uuid = uid()
         self.ox = 0.0          # block origin offset — set per block during assembly
         self.oy = 0.0
+        # hierarchical assembly: when root_uuid is set this schematic is a sub-sheet
+        self.root_uuid = None
+        self.sheet_uuid = None     # uuid of the (sheet) symbol in the root that hosts us
+        self.page = "1"
+        self.global_nets = set()   # nets emitted as global_label (cross-sheet)
+
+    @property
+    def _sid(self):
+        return self.sheet_uuid or self.uuid
+
+    @property
+    def _inst_path(self):
+        return f"/{self.root_uuid}/{self._sid}" if self.root_uuid else f"/{self._sid}"
+
+    @property
+    def _sheet_path(self):
+        return f"/{self._sid}" if self.root_uuid else "/"
 
     def origin(self, ox, oy):
         """Set the offset added to every subsequently-added component's position,
@@ -215,7 +232,7 @@ class Schematic:
             L(f'\t\t(pin "{num}" (uuid "{uid()}"))')
         L(f'\t\t(instances')
         L(f'\t\t\t(project "hardfuzz_v1"')
-        L(f'\t\t\t\t(path "/{self.uuid}" (reference "{c.ref}") (unit {c.unit}))))')
+        L(f'\t\t\t\t(path "{self._inst_path}" (reference "{c.ref}") (unit {c.unit}))))')
         L(f'\t)')
         return "\n".join(lines)
 
@@ -244,10 +261,16 @@ class Schematic:
                     f'\t\t(stroke (width 0) (type default)) (uuid "{uid()}"))')
             else:
                 ex, ey, lang = x, y, 0
-            out.append(
-                f'\t(label "{net}" (at {ex:.2f} {ey:.2f} {lang})\n'
-                f'\t\t(effects (font (size 1.27 1.27)) (justify left))\n'
-                f'\t\t(uuid "{uid()}"))')
+            if net in self.global_nets:
+                out.append(
+                    f'\t(global_label "{net}" (shape bidirectional) (at {ex:.2f} {ey:.2f} {lang})\n'
+                    f'\t\t(effects (font (size 1.27 1.27)) (justify left))\n'
+                    f'\t\t(uuid "{uid()}"))')
+            else:
+                out.append(
+                    f'\t(label "{net}" (at {ex:.2f} {ey:.2f} {lang})\n'
+                    f'\t\t(effects (font (size 1.27 1.27)) (justify left))\n'
+                    f'\t\t(uuid "{uid()}"))')
         return "\n".join(out)
 
     def render(self):
@@ -275,7 +298,7 @@ class Schematic:
             lbl = self._labels(c)
             if lbl:
                 parts.append(lbl)
-        parts.append(f'\t(sheet_instances\n\t\t(path "/" (page "1")))')
+        parts.append(f'\t(sheet_instances\n\t\t(path "{self._sheet_path}" (page "{self.page}")))')
         parts.append('\t(embedded_fonts no)')
         parts.append(')')
         return "\n".join(parts) + "\n"

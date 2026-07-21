@@ -40,9 +40,11 @@ placement/routing is left to eeschema; `kigen` guarantees the connections.
 ## Sheets
 
 Each `*_sheet.py` has `populate(s)` (adds its parts/nets to a shared schematic) and a
-standalone `build()`. `build_board.py` composes them into one flat **`board.kicad_sch`**,
-placing each block in its own region via origin offsets — cross-block signals share
-local-label names and rails are global, so the whole board nets as one connected design.
+standalone `build()`. `build_board.py` assembles them into a **hierarchical project**: one
+readable sub-sheet per subsystem (`power/can/levelshift/usb/fpga.kicad_sch`) plus a root
+`board.kicad_sch` that instantiates all five. Cross-sheet signals are emitted as **global
+labels** (connect by name across the hierarchy); block-internal nets stay local; rails are
+global via power symbols. One page per subsystem — far more legible than a flat sheet.
 
 | Sheet | Contents | Status |
 |---|---|---|
@@ -51,7 +53,7 @@ local-label names and rails are global, so the whole board nets as one connected
 | `levelshift_sheet.py` | TXS0108E, I2C pull-ups, VREF sense+TVS, Qwiic + headers | ✅ netlist-verified |
 | `usb_sheet.py` | FT2232HQ, USB-C, USBLC6, VBUS TVS, 12 MHz xtal, QSPI flash | ✅ netlist-verified |
 | `fpga_sheet.py` | XC7A35T-**CSG324** (5 units), power/config/clock/bus auto-mapped, osc, PROG btn, DONE LED | ✅ netlist-verified |
-| `build_board.py` | full board assembly | ✅ 67 parts, 300 nets, cross-block nets join |
+| `build_board.py` | hierarchical assembly (root + 5 sub-sheets) | ✅ 68 parts, 300 nets, cross-sheet nets join via global labels |
 
 **Verified end-to-end:** loads in KiCad 10, renders, netlist connectivity confirmed across
 blocks (SPI↔FPGA↔level-shifter, JTAG↔FT2232, flash↔FPGA, VREF divider↔XADC, CAN↔FPGA), and
