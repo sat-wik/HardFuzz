@@ -1,0 +1,9 @@
+# generated/exported artifacts (regenerate via gen/*.py + kicad-cli)
+*.pdf
+*.net
+*.rpt
+*-erc.rpt
+fp-info-cache
+*-backups/
+_autosave-*
+*.kicad_prl
