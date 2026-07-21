@@ -37,10 +37,29 @@ placement/routing is left to eeschema; `kigen` guarantees the connections.
   (`20250114`); mixing the version token with newer tokens is what made early files fail
   to load.
 
-## Status
+## Sheets
 
-- `power_sheet.py` — **generated, loads, renders, netlist-verified** (3 regulators, rails,
-  feedback dividers; only NC pins unconnected). Known: power-symbol refs need
-  auto-annotation in eeschema (cosmetic ERC warnings).
-- Next sheets: USB/FT2232H + config flash, level shifters + connectors, CAN, FPGA (needs an
-  imported FTG256 symbol — see [../kicad_parts.md](../kicad_parts.md)).
+Each `*_sheet.py` has `populate(s)` (adds its parts/nets to a shared schematic) and a
+standalone `build()`. `build_board.py` composes them into one flat **`board.kicad_sch`**,
+placing each block in its own region via origin offsets — cross-block signals share
+local-label names and rails are global, so the whole board nets as one connected design.
+
+| Sheet | Contents | Status |
+|---|---|---|
+| `power_sheet.py` | 3 regulators (+3V3/+1V0/+1V8), feedback dividers, decoupling | ✅ netlist-verified |
+| `can_sheet.py` | SN65HVD230, split-120R term, screw terminal | ✅ netlist-verified |
+| `levelshift_sheet.py` | TXS0108E, I2C pull-ups, VREF sense+TVS, Qwiic + headers | ✅ netlist-verified |
+| `usb_sheet.py` | FT2232HQ, USB-C, USBLC6, VBUS TVS, 12 MHz xtal, QSPI flash | ✅ netlist-verified |
+| `fpga_sheet.py` | XC7A35T-**CSG324** (5 units), power/config/clock/bus auto-mapped, osc, PROG btn, DONE LED | ✅ netlist-verified |
+| `build_board.py` | full board assembly | ✅ 67 parts, 300 nets, cross-block nets join |
+
+**Verified end-to-end:** loads in KiCad 10, renders, netlist connectivity confirmed across
+blocks (SPI↔FPGA↔level-shifter, JTAG↔FT2232, flash↔FPGA, VREF divider↔XADC, CAN↔FPGA), and
+reviewed with the **kicad-happy skill** — it detected every subsystem (regulators, level
+shifter, memory interface, crystals, clock, CAN, dividers, decoupling, ESD) at HIGH trust.
+The generator's `check()` catches accidental net shorts at build time (0 on the board).
+
+**Known / left for eeschema + PCB:** ~238 spare FPGA I/O read as unconnected (add NC flags
+in layout); parts carry no MPNs yet (schematic-side; they live in [../bom.csv](../bom.csv));
+the FTDI descriptor EEPROM is omitted (optional); footprint links need the exact installed
+footprint names. Routing/placement is done in the GUI — the generator guarantees the nets.

@@ -17,9 +17,7 @@ FP_C = "Capacitor_SMD:C_0402_1005Metric"
 FP_R = "Resistor_SMD:R_0402_1005Metric"
 
 
-def build():
-    s = Schematic("HardFuzz v1 - CAN")
-
+def populate(s):
     def gnd(x, y, ref): s.add("power:GND", ref, "GND", x, y, {"1": "GND"})
 
     # transceiver
@@ -43,6 +41,11 @@ def build():
     # bus screw terminal: CANH / CANL / GND
     s.add(TERM, "J5", "CAN", 270, 80, {"1": "CANH", "2": "CANL", "3": "GND"},
           "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03")
+
+
+def build():
+    s = Schematic("HardFuzz v1 - CAN")
+    populate(s)
     return s
 
 

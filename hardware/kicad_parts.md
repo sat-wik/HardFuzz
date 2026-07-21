@@ -18,7 +18,7 @@ then capture is pure wiring.
 
 | Ref | Part | Symbol source | Footprint | Status |
 |---|---|---|---|---|
-| U1 | XC7A35T-1FTG256C | `FPGA_Xilinx_Artix7` may list XC7A35T — **verify FTG256 pin variant** | **BGA-256, 1.0 mm, 16×16 — likely create** from Xilinx pkg drawing | 🔧 **main effort** |
+| U1 | XC7A35T-1CSG324C | `FPGA_Xilinx_Artix7:XC7A35T-CSG324` ✅ (stock; chose CSG324 over FTG256 precisely because the symbol ships with KiCad) | **BGA-324, 0.8 mm** — confirm/create against Xilinx UG475 | ✅ symbol / 🔧 footprint |
 | U2 | FT2232HQ | `Interface_USB` (has FT2232H, likely the HL/LQFP symbol) | needs **QFN-64 9×9 0.5 mm** (HQ), not the LQFP | ⚠️ reuse symbol, pick QFN-64 fp |
 | U3 | N25Q032 QSPI | `Memory_Flash` — generic SPI/QSPI or W25Q32 equivalent | SOIC-8 (stock) | ✅ use generic if exact absent |
 | U4 | SN65HVD230 | `Interface_CAN_LIN` ✅ | SOIC-8 (stock) | ✅ |

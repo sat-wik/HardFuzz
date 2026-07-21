@@ -9,8 +9,8 @@ side) and [bom.csv](bom.csv) (part numbers + cost).
 Design target: reuse the **proven Cmod A7 core** (Artix-7 XC7A35T die + FT2232H
 USB-JTAG/UART + QSPI config) so the RTL we already run drops on unchanged (rebuilt against
 a new `.xdc`), and add the productization: level-shifted bus I/O with `VREF` sensing, an
-onboard CAN transceiver, and keyed target connectors. Package moves to FTG256 for easier
-fan-out (see §10.2).
+onboard CAN transceiver, and keyed target connectors. Package is CSG324 (stock KiCad
+symbol, easy fan-out — see §10.2).
 
 ---
 
@@ -65,9 +65,9 @@ VCCAUX 1×47µF + 4×4.7µF; each VCCO bank 1×4.7µF + 0.47µF/pin group; 100nF
 
 ---
 
-## 3. FPGA — XC7A35T-1FTG256C
+## 3. FPGA — XC7A35T-1CSG324C
 
-Same die as the Cmod A7 (FTG256 package for fan-out — §10.2); the signal *intent* carries
+Same die as the Cmod A7 (CSG324 package — stock KiCad symbol, §10.2); the signal *intent* carries
 over, pin *numbers* are reassigned in a fresh `.xdc`. Key connections:
 
 - **Power:** VCCINT/VCCBRAM=1V0, VCCAUX/VCCADC=1V8, VCCO (banks 14/15/16/34/35)=3V3.
@@ -190,12 +190,13 @@ statically directional (SCK/MOSI/CS out, MISO in), so lay out DNP footprints for
 74LVC1T45 directional shifters; a high-speed-SPI build then swaps parts with **no respin**.
 (I2C's SDA must stay auto-direction → keep it on the TXS0108E.)
 
-**2. FPGA package → FTG256 (1.0 mm), not CPG236.** *(ripples into §3, BOM U1)*
-The RTL is package-independent; only the `.xdc` pin map changes, and we rebuild the
-bitstream for the custom board regardless — so CPG236's "bitstream parity" argument is
-weak. FTG256's 1.0 mm pitch escapes cleanly on a standard 4-layer board with normal design
-rules and reflows with a plain stencil, whereas CPG236's 0.5 mm pitch pushes toward
-HDI/via-in-pad and is a real first-board yield risk. Same XC7A35T die.
+**2. FPGA package → CSG324 (0.8 mm).** *(ripples into §3, BOM U1)* **[updated during capture]**
+Originally FTG256 (1.0 mm) was picked over CPG236 for fan-out. During KiCad capture we
+switched to **CSG324**: KiCad's stock Artix-7 library ships an `XC7A35T-CSG324` symbol (and
+CPG236, but **not** FTG256), so CSG324 needs **no external symbol import**. At 0.8 mm pitch
+it still escapes on a standard 4-layer board (vs CPG236's 0.5 mm HDI risk), the RTL is
+package-independent (only a fresh `.xdc` is needed), and it's the same XC7A35T die. The
+generated schematic (`hardfuzz_v1/gen/fpga_sheet.py`) uses CSG324.
 
 **3. Target voltage → 3.3 V and 5 V for v1; defer 1.8 V.** *(ripples into §2, §7, spec)*
 The TXS0108E requires **VCCA ≤ VCCB**. With the FPGA bus bank (VCCA) at 3.3 V, VREF (VCCB)

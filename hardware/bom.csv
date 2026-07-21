@@ -1,5 +1,5 @@
 ref,qty,part,value,package,function,unit_usd_100,notes
-U1,1,XC7A35T-1FTG256C,,BGA-256,FPGA fault-injection engine,19.00,1.0mm pitch for 4-layer fan-out (see design sec.10.2)
+U1,1,XC7A35T-1CSG324C,,BGA-324,FPGA fault-injection engine,19.00,0.8mm pitch; stock KiCad symbol (see design sec.10.2)
 U2,1,FT2232HQ-REEL,,QFN-64,USB2.0 dual bridge: JTAG config + host UART,5.00,ch A=JTAG ch B=UART
 U3,1,N25Q032A13ESF40,32Mb,SOIC-8,QSPI configuration flash,0.55,holds preloaded multi-protocol bitstream
 U4,1,SN65HVD230DR,,SOIC-8,CAN transceiver (3V3),1.20,logic side 3V3 direct to FPGA

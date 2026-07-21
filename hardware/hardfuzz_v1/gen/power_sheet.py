@@ -19,9 +19,7 @@ FP_R = "Resistor_SMD:R_0402_1005Metric"
 FP_L = "Inductor_SMD:L_0805_2012Metric"
 
 
-def build():
-    s = Schematic("HardFuzz v1 - Power")
-
+def populate(s):
     def rail(net, x, y, ref):        # rail flag / power symbol
         s.add(f"power:{net}", ref, net, x, y, {"1": net})
 
@@ -68,6 +66,10 @@ def build():
     s.add(C, "C8", "1uF", x + 25, 92, {"1": "+1V8", "2": "GND"}, FP_C)
     gnd(x, 108, "#PWR08")
 
+
+def build():
+    s = Schematic("HardFuzz v1 - Power")
+    populate(s)
     return s
 
 
