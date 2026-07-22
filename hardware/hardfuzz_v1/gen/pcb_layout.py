@@ -16,6 +16,7 @@ import wx   # headless pcbnew needs a wxApp before zone ops (else segfault)
 HERE = os.path.dirname(os.path.abspath(__file__)) + "/.."
 PCB = os.path.normpath(HERE + "/hardfuzz_v1.kicad_pcb")
 NET = "/tmp/n.xml"
+FPDIR = "/Applications/KiCad/KiCad.app/Contents/SharedSupport/footprints"
 MM = pcbnew.FromMM
 def mm(v): return pcbnew.ToMM(v)
 
@@ -129,13 +130,43 @@ def zones_pass():
     add_plane(pcbnew.In1_Cu, "GND")
     add_plane(pcbnew.In2_Cu, "+3V3")
     board.Save(PCB)
-    print(f"pass 2: {len(list(board.Zones()))} planes added (GND/In1, +3V3/In2) — "
-          f"press B in pcbnew to pour them")
+    print(f"pass 2: {len(list(board.Zones()))} planes added (GND/In1, +3V3/In2)")
 
 
+def fill_pass():
+    """Pass 3 (fresh process): pour the zones."""
+    _app = wx.App()
+    board = pcbnew.LoadBoard(PCB)
+    pcbnew.ZONE_FILLER(board).Fill(board.Zones())
+    board.Save(PCB)
+    print("pass 3: planes poured")
+
+
+def holes_pass():
+    """Pass 4 (fresh process): mounting holes at the corners."""
+    _app = wx.App()
+    board = pcbnew.LoadBoard(PCB)
+    bb = board.GetBoardEdgesBoundingBox()
+    x0, y0, x1, y1 = mm(bb.GetLeft()), mm(bb.GetTop()), mm(bb.GetRight()), mm(bb.GetBottom())
+    # drop any existing mounting holes first (idempotent)
+    for fp in list(board.GetFootprints()):
+        if fp.GetReference().startswith("H"):
+            board.Remove(fp)
+    for i, (mx, my) in enumerate([(x0+4, y0+4), (x1-4, y0+4), (x1-4, y1-4), (x0+4, y1-4)]):
+        fp = pcbnew.FootprintLoad(FPDIR + "/MountingHole.pretty", "MountingHole_2.2mm_M2")
+        fp.SetReference(f"H{i+1}")
+        fp.SetPosition(pcbnew.VECTOR2I(MM(mx), MM(my)))
+        board.Add(fp)
+    board.Save(PCB)
+    print("pass 4: 4 mounting holes added")
+
+
+# Each pass runs in its own process (pcbnew LoadBoard works once per process, and
+# zone/footprint ops after SetCopperLayerCount segfault in-session) — so we chain them.
 if __name__ == "__main__":
-    if "--zones" in sys.argv:
-        zones_pass()
-    else:
-        place_pass()
-        subprocess.run([sys.executable, os.path.abspath(__file__), "--zones"], check=True)
+    chain = {"--zones": zones_pass, "--fill": fill_pass, "--holes": holes_pass}
+    nxt = {None: "--zones", "--zones": "--fill", "--fill": "--holes", "--holes": None}
+    flag = next((a for a in sys.argv[1:] if a in chain), None)
+    (chain[flag] if flag else place_pass)()
+    if nxt[flag]:
+        subprocess.run([sys.executable, os.path.abspath(__file__), nxt[flag]], check=True)
