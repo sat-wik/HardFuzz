@@ -18,10 +18,16 @@ Flutter/Dart — one codebase for iOS + Android. `flutter_reactive_ble` for BLE 
 app/
   pubspec.yaml
   lib/
+    main.dart          app entry (MaterialApp)
+    store.dart         tiny shared state + preset campaigns
     models.dart        data models + the Status/Result decoders (match ble_service.cpp)
     hardfuzz_ble.dart  BLE client: scan/connect, subscribe, push campaign, control
     report.dart        HTML/PDF evidence report (mirrors host report.hpp)
-    # TODO: main.dart + screens (connect / configure / run / report)
+    screens/
+      connect_screen.dart    scan + connect
+      campaign_screen.dart   pick a preset, Push & Run
+      run_screen.dart        live progress + streaming results
+      report_screen.dart     KPIs + traceability table + Export PDF
 ```
 
 ## GATT contract
@@ -68,9 +74,10 @@ must agree.
 | BLE client (`hardfuzz_ble.dart`) — scan/connect/subscribe/push/control | ✅ scaffolded against `flutter_reactive_ble` |
 | Campaign JSON encoder | ✅ matches `campaign_from_json` / `host/campaigns/*.json` |
 | Report generator (`report.dart`) | ✅ HTML mirroring `report.hpp`; PDF via `printing` |
-| Flutter UI (`main.dart` + screens) | ⚠️ TODO |
+| Flutter UI (4 screens: connect / campaign / run / report) | ✅ built — wired to the BLE client + streams |
 | On-device BLE bring-up | ⚠️ needs the ESP32 firmware running (pairs with its NimBLE TODO) |
-| iOS/Android BLE permissions (Info.plist / AndroidManifest) | ⚠️ add when the UI is built |
+| iOS/Android BLE permissions (Info.plist / AndroidManifest) | ⚠️ add before running on a device |
+| `flutter create .` platform folders (android/ ios/) | ⚠️ generate locally (not committed) |
 
 ## Build (once the UI exists)
 

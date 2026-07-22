@@ -11,7 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_reactive_ble: ^5.3.1   # cross-platform BLE central
-  printing: ^5.12.0              # HTML/PDF export of the evidence report
+  printing: ^5.12.0              # HTML->PDF export of the evidence report
+  pdf: ^3.10.8                   # PdfPageFormat for the export
   path_provider: ^2.1.0          # save reports
 
 dev_dependencies:
