@@ -1,0 +1,16 @@
+# HardFuzz v2 — ESP32-S3 + NimBLE peripheral, C++17 engine with exceptions.
+CONFIG_IDF_TARGET="esp32s3"
+
+# Bluetooth Low Energy (NimBLE host, peripheral role)
+CONFIG_BT_ENABLED=y
+CONFIG_BT_NIMBLE_ENABLED=y
+CONFIG_BT_NIMBLE_ROLE_PERIPHERAL=y
+CONFIG_BT_NIMBLE_ROLE_BROADCASTER=y
+CONFIG_BT_NIMBLE_ROLE_CENTRAL=n
+CONFIG_BT_NIMBLE_ROLE_OBSERVER=n
+
+# the campaign engine's JSON parser uses exceptions
+CONFIG_COMPILER_CXX_EXCEPTIONS=y
+
+# native USB-Serial-JTAG console for the S3 (program/monitor over USB-C)
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
