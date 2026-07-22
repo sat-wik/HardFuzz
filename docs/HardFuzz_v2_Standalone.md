@@ -132,3 +132,7 @@ code-generated KiCad project.
 that makes the ESP32 port cheap). To build v2: add the ESP32 to the board (schematic sheet —
 done in the KiCad project), write the two UART transports + BLE service on ESP-IDF, and the
 phone app. The v1 board + host flow keeps working throughout — v2 is an additive path.
+
+**The ordered path from repo to a working unit is in
+[HardFuzz_v2_BringUp.md](HardFuzz_v2_BringUp.md)** — PCB routing → assembly → power → FPGA
+bitstream → ESP32 firmware → app → integration, with the hard steps and risks flagged.
