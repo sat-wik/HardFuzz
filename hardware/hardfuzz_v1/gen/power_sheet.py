@@ -38,6 +38,7 @@ def populate(s):
     rail("+3V3", x, 40, "#PWR03")
     s.add(BUCK, "U6", "TLV62566", x, 80, {"4": "+5V", "2": "GND",
                                           "3": "SW_3V3", "5": "FB_3V3"},
+          "Package_TO_SOT_SMD:SOT-23-5",
           nc_unused=True, mpn="TLV62566DBVR")   # pin1 PG (open-drain) left NC
     s.add(IND, "L1", "2.2uH", x + 28, 58, {"1": "SW_3V3", "2": "+3V3"}, FP_L)
     s.add(C, "C3", "22uF", x + 28, 92, {"1": "+3V3", "2": "GND"}, FP_C)
@@ -51,6 +52,7 @@ def populate(s):
     rail("+1V0", x, 40, "#PWR05")
     s.add(BUCK, "U7", "TLV62566", x, 80, {"4": "+3V3", "2": "GND",
                                           "3": "SW_1V0", "5": "FB_1V0"},
+          "Package_TO_SOT_SMD:SOT-23-5",
           nc_unused=True, mpn="TLV62566DBVR")   # pin1 PG (open-drain) left NC
     s.add(IND, "L2", "1.5uH", x + 28, 58, {"1": "SW_1V0", "2": "+1V0"}, FP_L)
     s.add(C, "C5", "22uF", x + 28, 92, {"1": "+1V0", "2": "GND"}, FP_C)
@@ -63,7 +65,8 @@ def populate(s):
     x = 330
     rail("+1V8", x, 40, "#PWR07")
     s.add(LDO, "U8", "AP2112K-1.8", x, 80, {"3": "+3V3", "1": "+3V3", "2": "GND",
-                                            "5": "+1V8"}, nc_unused=True, mpn="AP2112K-1.8TRG1")
+                                            "5": "+1V8"}, "Package_TO_SOT_SMD:SOT-23-5",
+          nc_unused=True, mpn="AP2112K-1.8TRG1")
     s.add(C, "C7", "1uF", x - 20, 92, {"1": "+3V3", "2": "GND"}, FP_C)
     s.add(C, "C8", "1uF", x + 25, 92, {"1": "+1V8", "2": "GND"}, FP_C)
     gnd(x, 108, "#PWR08")

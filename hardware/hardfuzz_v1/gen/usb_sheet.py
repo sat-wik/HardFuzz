@@ -43,7 +43,9 @@ def populate(s):
         # channel A -> JTAG   (ADBUS0=TCK, 1=TDI, 2=TDO, 3=TMS)
         "16": "JTAG_TCK", "17": "JTAG_TDI", "18": "JTAG_TDO", "19": "JTAG_TMS",
         # channel B -> host UART (BDBUS0=TXD out, BDBUS1=RXD in)
-        "38": "HOST_TXD", "39": "HOST_RXD"}, nc_unused=True, mpn="FT2232HQ-REEL")
+        "38": "HOST_TXD", "39": "HOST_RXD"},
+        "Package_DFN_QFN:QFN-64-1EP_9x9mm_P0.5mm_EP4.35x4.35mm",
+        nc_unused=True, mpn="FT2232HQ-REEL")
     rail("+3V3", 60, 205, "#PWR30")
     gnd(150, 200, "#PWR31")
     # decoupling row (below the FT symbol, spread horizontally so stubs don't overlap)
@@ -80,7 +82,7 @@ def populate(s):
     s.add(FLASH, "U3", "MX25L3233F", 400, 120, {
         "16": "FLASH_CCLK", "7": "FLASH_CS", "15": "FLASH_D0", "8": "FLASH_D1",
         "9": "FLASH_D2", "1": "FLASH_D3", "2": "+3V3", "10": "GND"},
-        "Package_SO:SOIC-8_5.23x5.23mm_P1.27mm", nc_unused=True, mpn="MX25L3233FM2I-08G")
+        "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm", nc_unused=True, mpn="MX25L3233FM2I-08G")
     rail("+3V3", 400, 70, "#PWR34")
     gnd(400, 165, "#PWR35")
     s.add(R, "R43", "10k", 435, 95, {"1": "+3V3", "2": "FLASH_CS"}, FP_R)

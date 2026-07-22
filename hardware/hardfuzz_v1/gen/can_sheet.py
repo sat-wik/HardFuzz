@@ -24,7 +24,7 @@ def populate(s):
     s.add(XCVR, "U9", "SN65HVD230", 150, 80,
           {"1": "CAN_TXD", "2": "GND", "3": "+3V3", "4": "CAN_RXD",
            "6": "CANL", "7": "CANH", "8": "CAN_RS"},   # pin 5 Vref: NC
-          nc_unused=True, mpn="SN65HVD230DR")
+          "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm", nc_unused=True, mpn="SN65HVD230DR")
     s.add("power:+3V3", "#PWR11", "+3V3", 150, 45, {"1": "+3V3"})
     gnd(150, 112, "#PWR12")
 
@@ -41,7 +41,7 @@ def populate(s):
 
     # bus screw terminal: CANH / CANL / GND
     s.add(TERM, "J5", "CAN", 270, 80, {"1": "CANH", "2": "CANL", "3": "GND"},
-          "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03")
+          "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MPT-0,5-3-2.54_1x03_P2.54mm_Horizontal")
 
 
 def build():

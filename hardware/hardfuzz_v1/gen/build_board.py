@@ -94,12 +94,12 @@ def build():
                 s.add("power:PWR_FLAG", f"#FLG{50+j}", "PWR_FLAG", 40 + j * 18, 250, {"1": net})
         s.autofit()                            # frame every sheet with a margin, size paper to fit
         total_conflicts += len(s.write(os.path.join(HERE, file)))
-    with open(os.path.join(HERE, "board.kicad_sch"), "w") as f:
+    with open(os.path.join(HERE, "hardfuzz_v1.kicad_sch"), "w") as f:
         f.write(_root(root_uuid, sheet_uuids))
     return gnets, total_conflicts
 
 
 if __name__ == "__main__":
     gnets, conflicts = build()
-    print(f"wrote board.kicad_sch + {len(BLOCKS)} sub-sheets | "
+    print(f"wrote hardfuzz_v1.kicad_sch + {len(BLOCKS)} sub-sheets | "
           f"global nets: {len(gnets)} | collisions: {conflicts}")

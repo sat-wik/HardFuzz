@@ -67,5 +67,28 @@ no-connect flags on all spare FPGA/IC pins (238 → 0 unconnected warnings), gri
 endpoints, VBUS TVS (UC-002), correct PG/PWR_FLAG typing, and the FT core rail renamed
 `VDDCORE_FT` so PP-001 reads it as an internal rail (info, not error).
 
-**Left for eeschema + PCB:** passive MPNs (procurement), exact footprint links, the
-optional FTDI EEPROM, and routing/placement (GUI). The generator guarantees the netlist.
+**Left for eeschema + PCB:** passive MPNs (procurement), the optional FTDI EEPROM, and
+**routing** (GUI/autorouter). The generator guarantees the netlist.
+
+## PCB — `kigen_pcb.py`
+
+`kigen_pcb.py` generates **`../hardfuzz_v1.kicad_pcb`**: it pulls the canonical netlist from
+the schematic, loads each part's stock `.kicad_mod`, shelf-packs every footprint (origin
+offset from bbox so courtyards don't overlap), injects `(net N "name")` into each pad, and
+adds a board outline + 2-layer stackup (switch to 4-layer in Board Setup). All footprints
+resolve to real KiCad libraries — including the **BGA-324** FPGA and the **QFN-64** FT2232.
+
+```bash
+python3 gen/build_board.py     # schematic first (netlist source)
+python3 gen/kigen_pcb.py       # -> ../hardfuzz_v1.kicad_pcb
+$KCLI pcb drc hardfuzz_v1.kicad_pcb            # 317 unconnected = unrouted (expected)
+$KCLI pcb render --side top -o /tmp/pcb.png hardfuzz_v1.kicad_pcb
+```
+
+**State:** loads in pcbnew, 68 footprints placed (non-overlapping), 302 nets on the right
+pads, board outline present. The 317 "unconnected" are the **unrouted nets** — this is the
+*imported-from-schematic, auto-placed, unrouted* board. Remaining ~29 DRC items are internal
+USB-C fine-pitch clearance (needs a net-class rule) + one silk overlap. **Routing and final
+placement are interactive** (pcbnew / an external autorouter) — the generator sets it up;
+it does not draw copper. The project opens as `hardfuzz_v1.kicad_pro` (schematic + PCB
+linked, matching base names).

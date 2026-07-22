@@ -34,7 +34,7 @@ def populate(s):
         # B side (target, VREF)
         "20": "SPI_SCLK_B", "18": "SPI_MOSI_B", "17": "SPI_MISO_B", "16": "SPI_CS_B",
         "15": "I2C_SCL_B", "14": "I2C_SDA_B", "13": "UART_TTX_B", "12": "UART_TRX_B"},
-        mpn="TXS0108EPWR")
+        "Package_SO:TSSOP-20_4.4x6.5mm_P0.65mm", mpn="TXS0108EPWR")
     rail("+3V3", 130, 60, "#PWR20")
     gnd(150, 155, "#PWR21")
     s.add(C, "C30", "100nF", 110, 100, {"1": "+3V3", "2": "GND"}, FP_C)
