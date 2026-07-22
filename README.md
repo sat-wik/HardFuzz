@@ -25,9 +25,11 @@ as the device under test. Injector BOM ≈ $40.
 
 Every RTL core self-checks in simulation (`make sim`); the C++ host layer has its own
 test suite (`make -C host`). See **[HardFuzz_Refined_Plan.md](HardFuzz_Refined_Plan.md)**
-for the design and month-by-month build log, and
+for the design and month-by-month build log,
 **[docs/HardFuzz_v1_Spec.md](docs/HardFuzz_v1_Spec.md)** for where it's headed as a
-product — the board I/O, how it attaches to any target, and the out-of-box experience.
+product (board I/O, attach modes, out-of-box experience), and
+**[docs/HardFuzz_v2_Standalone.md](docs/HardFuzz_v2_Standalone.md)** for the computer-free
+v2 — an on-board ESP32 runs the campaign engine and streams results to a phone app over BLE.
 
 ## Layout
 

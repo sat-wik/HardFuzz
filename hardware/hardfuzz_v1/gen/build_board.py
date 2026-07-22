@@ -13,7 +13,7 @@ import sys, os
 from collections import Counter
 sys.path.insert(0, os.path.dirname(__file__))
 from kigen import Schematic, uid
-import fpga_sheet, power_sheet, can_sheet, levelshift_sheet, usb_sheet
+import fpga_sheet, power_sheet, can_sheet, levelshift_sheet, usb_sheet, esp32_sheet
 
 HERE = os.path.join(os.path.dirname(__file__), "..")
 # (sheet name, file, populate fn, paper size)
@@ -23,6 +23,7 @@ BLOCKS = [
     ("CAN",         "can.kicad_sch",        can_sheet.populate,        "A4"),
     ("Level Shift", "levelshift.kicad_sch", levelshift_sheet.populate, "A3"),
     ("USB",         "usb.kicad_sch",        usb_sheet.populate,        "A3"),
+    ("ESP32",       "esp32.kicad_sch",      esp32_sheet.populate,      "A3"),
 ]
 RAILS = {"+5V", "+3V3", "+1V0", "+1V8", "GND"}   # global already (power symbols)
 # rails needing a PWR_FLAG: regulator outputs (driven through the inductor, not a

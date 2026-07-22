@@ -41,9 +41,8 @@ def populate(s):
         "7": "USB_DM", "8": "USB_DP", "14": "FT_RESET", "13": "GND",
         "2": "FT_OSCI", "3": "FT_OSCO",
         # channel A -> JTAG   (ADBUS0=TCK, 1=TDI, 2=TDO, 3=TMS)
-        "16": "JTAG_TCK", "17": "JTAG_TDI", "18": "JTAG_TDO", "19": "JTAG_TMS",
-        # channel B -> host UART (BDBUS0=TXD out, BDBUS1=RXD in)
-        "38": "HOST_TXD", "39": "HOST_RXD"},
+        "16": "JTAG_TCK", "17": "JTAG_TDI", "18": "JTAG_TDO", "19": "JTAG_TMS"},
+        # channel B (BDBUS0/1) is free: the ESP32 owns the runtime control UART (v2).
         "Package_DFN_QFN:QFN-64-1EP_9x9mm_P0.5mm_EP4.35x4.35mm",
         nc_unused=True, mpn="FT2232HQ-REEL")
     rail("+3V3", 60, 205, "#PWR30")
